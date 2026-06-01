@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
 </head>
 
 <body>
@@ -17,6 +16,45 @@
   <!-- Custom cursor -->
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- PROGRAM DETAIL POPUP -->
+  <div class="prog-overlay" id="progOverlay">
+    <div class="prog-modal">
+      <button class="prog-close" id="progClose">✕</button>
+      <div class="prog-modal-inner">
+        <div class="prog-modal-img-wrap">
+          <img id="progImg" src="" alt="">
+          <div class="prog-modal-num" id="progNum"></div>
+        </div>
+        <div class="prog-modal-content">
+          <span class="program-tag" id="progLevel"></span>
+          <h3 class="prog-title" id="progTitle"></h3>
+          <p class="prog-summary" id="progSummary"></p>
+          <div class="prog-details">
+            <div class="prog-detail-block">
+              <div class="prog-detail-label">Duration</div>
+              <div class="prog-detail-val" id="progDuration"></div>
+            </div>
+            <div class="prog-detail-block">
+              <div class="prog-detail-label">Frequency</div>
+              <div class="prog-detail-val" id="progFrequency"></div>
+            </div>
+            <div class="prog-detail-block">
+              <div class="prog-detail-label">Coach</div>
+              <div class="prog-detail-val" id="progCoach"></div>
+            </div>
+          </div>
+          <div class="prog-highlights">
+            <div class="prog-highlights-title">What You'll Gain</div>
+            <ul id="progHighlights"></ul>
+          </div>
+          <div class="prog-actions">
+            <a href="#pricing" class="btn-primary prog-cta">Start This Program</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- NAV -->
   <nav id="navbar">
@@ -131,31 +169,34 @@
       </a>
     </div>
     <div class="programs-grid reveal">
-      <div class="program-card">
+      <div class="program-card" data-program="strength">
         <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80" alt="Strength Training">
         <div class="program-overlay">
           <span class="program-tag">Beginner – Advanced</span>
           <div class="program-num">01</div>
           <div class="program-name">Strength & Power</div>
           <div class="program-desc">Build raw, functional strength with progressive overload systems designed by elite powerlifting coaches.</div>
+          <button class="program-learn-btn">Learn More <span>→</span></button>
         </div>
       </div>
-      <div class="program-card">
+      <div class="program-card" data-program="hiit">
         <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=600&q=80" alt="HIIT">
         <div class="program-overlay">
           <span class="program-tag">All Levels</span>
           <div class="program-num">02</div>
           <div class="program-name">HIIT & Cardio</div>
           <div class="program-desc">Torch calories, boost metabolism, and build endurance with high-intensity interval training circuits.</div>
+          <button class="program-learn-btn">Learn More <span>→</span></button>
         </div>
       </div>
-      <div class="program-card">
+      <div class="program-card" data-program="yoga">
         <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" alt="Yoga">
         <div class="program-overlay">
           <span class="program-tag">All Levels</span>
           <div class="program-num">03</div>
           <div class="program-name">Yoga & Recovery</div>
           <div class="program-desc">Enhance flexibility, reduce injury risk, and sharpen mental focus through mindful movement practices.</div>
+          <button class="program-learn-btn">Learn More <span>→</span></button>
         </div>
       </div>
     </div>
@@ -470,6 +511,99 @@
     </div>
   </section>
 
+  <!-- SUBSCRIPTION MODAL -->
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <div class="modal-header">
+        <div class="modal-tag">Join Iron Temple</div>
+        <h2 class="modal-title" id="modalTitle">START YOUR<br><span>TRANSFORMATION</span></h2>
+      </div>
+
+      <!-- Step 1: Plan selection -->
+      <div class="modal-step" id="step1">
+        <p class="modal-sub">Choose your membership plan</p>
+        <div class="modal-plans">
+          <label class="modal-plan-option">
+            <input type="radio" name="plan" value="Starter – $29/mo">
+            <div class="plan-box">
+              <div class="plan-name">Starter</div>
+              <div class="plan-price">$29<span>/mo</span></div>
+            </div>
+          </label>
+          <label class="modal-plan-option">
+            <input type="radio" name="plan" value="Elite – $69/mo" checked>
+            <div class="plan-box featured">
+              <div class="plan-badge">Popular</div>
+              <div class="plan-name">Elite</div>
+              <div class="plan-price">$69<span>/mo</span></div>
+            </div>
+          </label>
+          <label class="modal-plan-option">
+            <input type="radio" name="plan" value="Champion – $129/mo">
+            <div class="plan-box">
+              <div class="plan-name">Champion</div>
+              <div class="plan-price">$129<span>/mo</span></div>
+            </div>
+          </label>
+        </div>
+        <button class="btn-submit" id="step1Next" style="margin-top:24px;">Continue →</button>
+      </div>
+
+      <!-- Step 2: Personal info -->
+      <div class="modal-step" id="step2" style="display:none;">
+        <p class="modal-sub">Your details</p>
+        <div class="contact-form" id="subscriptionForm">
+          <div class="form-row">
+            <div class="form-field">
+              <label>First Name *</label>
+              <input type="text" id="subFirstName" placeholder="Alex" required>
+            </div>
+            <div class="form-field">
+              <label>Last Name *</label>
+              <input type="text" id="subLastName" placeholder="Smith" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Email *</label>
+            <input type="email" id="subEmail" placeholder="alex@email.com" required>
+          </div>
+          <div class="form-field">
+            <label>Phone</label>
+            <input type="tel" id="subPhone" placeholder="+355 000-000-0000">
+          </div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <button type="button" class="btn-secondary-outline" id="step2Back">← Back</button>
+            <button type="button" class="btn-submit" id="step2Submit" style="flex:1;">Confirm Membership →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div class="modal-step" id="step3" style="display:none;">
+        <div class="modal-success">
+          <div class="success-icon">✓</div>
+          <h3 class="success-title">Welcome to Iron Temple!</h3>
+          <p class="success-msg" id="successMsg"></p>
+          <p class="success-sub">We'll be in touch within 24 hours to confirm your start date.</p>
+          <button class="btn-submit" id="modalDone" style="margin-top:24px;">Let's Go →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL (hidden, toggle with Ctrl+Shift+A) -->
+  <div class="admin-overlay" id="adminOverlay" style="display:none;">
+    <div class="admin-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h3 style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;">SUBSCRIPTIONS <span id="subCount" style="color:var(--red);">0</span></h3>
+        <button class="modal-close" id="adminClose">✕</button>
+      </div>
+      <div id="subList" style="display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto;"></div>
+      <button id="clearSubs" style="margin-top:16px;background:transparent;border:1px solid var(--red);color:var(--red);padding:10px 20px;cursor:pointer;font-family:'Barlow Condensed';letter-spacing:2px;font-size:12px;text-transform:uppercase;">Clear All Data</button>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <div class="footer-top">
@@ -486,30 +620,30 @@
       <div>
         <div class="footer-col-title">Programs</div>
         <ul class="footer-links">
-          <li><a href="#">Strength Training</a></li>
-          <li><a href="#">HIIT & Cardio</a></li>
-          <li><a href="#">Yoga & Recovery</a></li>
-          <li><a href="#">Boxing & Combat</a></li>
-          <li><a href="#">CrossFit</a></li>
+          <li><a href="#programs" class="ft" data-tip="Progressive overload systems built by elite powerlifting coaches.">Strength Training</a></li>
+          <li><a href="#programs" class="ft" data-tip="Torch calories & spike endurance with interval circuits.">HIIT & Cardio</a></li>
+          <li><a href="#programs" class="ft" data-tip="Mobility, flexibility & mindful movement for active recovery.">Yoga & Recovery</a></li>
+          <li><a href="#programs" class="ft" data-tip="Real striking technique meets full-body conditioning.">Boxing & Combat</a></li>
+          <li><a href="#programs" class="ft" data-tip="Constantly varied functional movements at high intensity.">CrossFit</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-title">Company</div>
         <ul class="footer-links">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Our Trainers</a></li>
-          <li><a href="#">Success Stories</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
+          <li><a href="#about" class="ft" data-tip="Our story, values, and the belief that drove us to build this place.">About Us</a></li>
+          <li><a href="#trainers" class="ft" data-tip="Meet the certified coaches dedicated to your transformation.">Our Trainers</a></li>
+          <li><a href="#" class="ft" data-tip="Real results from real members — unfiltered.">Success Stories</a></li>
+          <li><a href="#" class="ft" data-tip="Join our team and help others forge their best selves.">Careers</a></li>
+          <li><a href="#" class="ft" data-tip="Media resources, press kits, and coverage.">Press</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-title">Support</div>
         <ul class="footer-links">
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Membership Terms</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Contact Us</a></li>
+          <li><a href="#" class="ft" data-tip="Answers to the most common questions about memberships & classes.">FAQ</a></li>
+          <li><a href="#" class="ft" data-tip="Full terms and conditions for all membership tiers.">Membership Terms</a></li>
+          <li><a href="#" class="ft" data-tip="How we handle, protect, and never sell your personal data.">Privacy Policy</a></li>
+          <li><a href="#contact" class="ft" data-tip="Reach our team — we usually reply within a few hours.">Contact Us</a></li>
         </ul>
       </div>
     </div>
@@ -520,57 +654,49 @@
   </footer>
 
   <script>
-    // Custom cursor
+    /* =============================================
+       IRON TEMPLE — Full Site Script
+       ============================================= */
+
+    // ── Custom cursor ──────────────────────────────
     const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
+    const ring   = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
     document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
     function animateCursor() {
-      cursor.style.left = mx + 'px';
-      cursor.style.top = my + 'px';
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
 
-    // Hover effect on interactive elements
-    document.querySelectorAll('a, button, .program-card, .trainer-card, .pricing-card').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.style.width = '20px';
-        cursor.style.height = '20px';
-        ring.style.width = '52px';
-        ring.style.height = '52px';
+    function refreshCursorTargets() {
+      document.querySelectorAll('a, button, .program-card, .trainer-card, .pricing-card, .modal-plan-option, label').forEach(el => {
+        el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='52px'; ring.style.height='52px'; });
+        el.addEventListener('mouseleave', () => { cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='36px'; ring.style.height='36px'; });
       });
-      el.addEventListener('mouseleave', () => {
-        cursor.style.width = '12px';
-        cursor.style.height = '12px';
-        ring.style.width = '36px';
-        ring.style.height = '36px';
-      });
-    });
+    }
+    refreshCursorTargets();
 
-    // Navbar scroll
+    // ── Navbar scroll ───────────────────────────────
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
+    // ── Reveal on scroll ────────────────────────────
+    const revealObs = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
           setTimeout(() => e.target.classList.add('visible'), i * 80);
-          observer.unobserve(e.target);
+          revealObs.unobserve(e.target);
         }
       });
     }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-    // Smooth anchor links
+    // ── Smooth anchor links ─────────────────────────
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const id = a.getAttribute('href');
@@ -580,20 +706,347 @@
       });
     });
 
-    // Form submit
+    // ── Contact form submit ─────────────────────────
     function handleSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
+
+      // Collect contact form data
+      const form = e.target;
+      const firstName = form.querySelector('input[placeholder="Alex"]')?.value || '';
+      const lastName  = form.querySelector('input[placeholder="Smith"]')?.value || '';
+      const email     = form.querySelector('input[type="email"]')?.value || '';
+      const interest  = form.querySelector('select')?.value || '';
+      const message   = form.querySelector('textarea')?.value || '';
+
+      saveContactMessage({ firstName, lastName, email, interest, message, date: new Date().toLocaleString() });
+
       btn.textContent = '✓ Message Sent!';
       btn.style.background = '#1a7a3c';
+      sendNotification('New Message from ' + firstName, `${email} is interested in: ${interest}`);
       setTimeout(() => {
         btn.textContent = 'Send Message →';
         btn.style.background = '';
-        e.target.reset();
+        form.reset();
       }, 3000);
     }
 
-    // Animated counter for hero stats
+    // ── LocalStorage helpers ─────────────────────────
+    function getSubscriptions() {
+      try { return JSON.parse(localStorage.getItem('irontemple_subs') || '[]'); }
+      catch { return []; }
+    }
+    function saveSubscription(data) {
+      const subs = getSubscriptions();
+      subs.unshift(data);
+      localStorage.setItem('irontemple_subs', JSON.stringify(subs));
+    }
+    function getMessages() {
+      try { return JSON.parse(localStorage.getItem('irontemple_messages') || '[]'); }
+      catch { return []; }
+    }
+    function saveContactMessage(data) {
+      const msgs = getMessages();
+      msgs.unshift(data);
+      localStorage.setItem('irontemple_messages', JSON.stringify(msgs));
+    }
+
+    // ── Browser notifications ────────────────────────
+    function requestNotifPermission() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    }
+    function sendNotification(title, body) {
+      if (!('Notification' in window)) return;
+      if (Notification.permission === 'granted') {
+        new Notification('🏋 Iron Temple — ' + title, { body, icon: '' });
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(p => {
+          if (p === 'granted') new Notification('🏋 Iron Temple — ' + title, { body });
+        });
+      }
+    }
+    // Ask for permission early (on first interaction)
+    document.addEventListener('click', function askOnce() {
+      requestNotifPermission();
+      document.removeEventListener('click', askOnce);
+    });
+
+    // ── Modal ────────────────────────────────────────
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose   = document.getElementById('modalClose');
+    let selectedPlan   = 'Elite – $69/mo';
+
+    function openModal(plan) {
+      if (plan) {
+        // Pre-select radio matching the plan label
+        document.querySelectorAll('input[name="plan"]').forEach(r => {
+          r.checked = r.value === plan;
+        });
+        selectedPlan = plan;
+      }
+      showStep(1);
+      modalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      refreshCursorTargets();
+    }
+    function closeModal() {
+      modalOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function showStep(n) {
+      document.getElementById('step1').style.display = n === 1 ? 'block' : 'none';
+      document.getElementById('step2').style.display = n === 2 ? 'block' : 'none';
+      document.getElementById('step3').style.display = n === 3 ? 'block' : 'none';
+    }
+
+    modalClose?.addEventListener('click', closeModal);
+    modalOverlay?.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+
+    // Step 1 → Step 2
+    document.getElementById('step1Next')?.addEventListener('click', () => {
+      const selected = document.querySelector('input[name="plan"]:checked');
+      selectedPlan = selected ? selected.value : 'Elite – $69/mo';
+      showStep(2);
+    });
+
+    // Step 2 back
+    document.getElementById('step2Back')?.addEventListener('click', () => showStep(1));
+
+    // Step 2 submit
+    document.getElementById('step2Submit')?.addEventListener('click', () => {
+      const first = document.getElementById('subFirstName').value.trim();
+      const last  = document.getElementById('subLastName').value.trim();
+      const email = document.getElementById('subEmail').value.trim();
+      const phone = document.getElementById('subPhone').value.trim();
+
+      if (!first || !last || !email) {
+        alert('Please fill in your name and email.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      const sub = {
+        id: Date.now(),
+        firstName: first,
+        lastName: last,
+        email,
+        phone,
+        plan: selectedPlan,
+        date: new Date().toLocaleString()
+      };
+
+      saveSubscription(sub);
+      sendNotification(`New Member: ${first} ${last}`, `Plan: ${selectedPlan} · ${email}`);
+
+      document.getElementById('successMsg').textContent =
+        `${first}, you're now signed up for the ${selectedPlan} plan!`;
+      showStep(3);
+    });
+
+    document.getElementById('modalDone')?.addEventListener('click', closeModal);
+
+    // ── Wire "Join Now" buttons to open modal ─────────
+    // Nav CTA
+    document.querySelector('.nav-cta')?.addEventListener('click', () => openModal());
+
+    // Pricing card buttons — detect plan from card label
+    document.querySelectorAll('.btn-plan').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        const card  = btn.closest('.pricing-card');
+        const label = card?.querySelector('.pricing-label')?.textContent || '';
+        const price = card?.querySelector('.pricing-price')?.textContent?.replace(/[^\d]/g, '') || '';
+        const map   = { 'Starter': 'Starter – $29/mo', 'Elite': 'Elite – $69/mo', 'Champion': 'Champion – $129/mo' };
+        openModal(map[label] || 'Elite – $69/mo');
+      });
+    });
+
+    // Hero "Start Training" + CTA Banner "Claim Free Week"
+    document.querySelectorAll('a[href="#pricing"].btn-primary, a[href="#contact"].btn-white').forEach(btn => {
+      btn.addEventListener('click', e => {
+        if (btn.classList.contains('btn-white')) {
+          e.preventDefault();
+          openModal('Starter – $29/mo');
+        }
+      });
+    });
+
+    // "Claim Free Week" button specifically
+    document.querySelector('.cta-banner .btn-white')?.addEventListener('click', e => {
+      e.preventDefault();
+      openModal('Starter – $29/mo');
+    });
+
+    // ── Admin panel (Ctrl+Shift+A) ────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        renderAdminPanel();
+        document.getElementById('adminOverlay').style.display = 'flex';
+      }
+    });
+    document.getElementById('adminClose')?.addEventListener('click', () => {
+      document.getElementById('adminOverlay').style.display = 'none';
+    });
+    document.getElementById('adminOverlay')?.addEventListener('click', e => {
+      if (e.target === document.getElementById('adminOverlay'))
+        document.getElementById('adminOverlay').style.display = 'none';
+    });
+    document.getElementById('clearSubs')?.addEventListener('click', () => {
+      if (confirm('Delete all subscriptions and messages?')) {
+        localStorage.removeItem('irontemple_subs');
+        localStorage.removeItem('irontemple_messages');
+        renderAdminPanel();
+      }
+    });
+
+    function renderAdminPanel() {
+      const subs = getSubscriptions();
+      const msgs = getMessages();
+      document.getElementById('subCount').textContent = subs.length;
+      const list = document.getElementById('subList');
+
+      let html = '';
+      if (subs.length === 0 && msgs.length === 0) {
+        html = '<p style="color:var(--grey);font-size:14px;">No data yet.</p>';
+      }
+      subs.forEach(s => {
+        html += `<div class="admin-entry">
+          <div class="admin-entry-top">
+            <span style="font-family:'Bebas Neue';font-size:18px;letter-spacing:1px;">${s.firstName} ${s.lastName}</span>
+            <span class="admin-plan-badge">${s.plan}</span>
+          </div>
+          <div style="font-size:13px;color:var(--grey);">${s.email}${s.phone ? ' · ' + s.phone : ''}</div>
+          <div style="font-size:11px;color:var(--grey);margin-top:4px;">${s.date}</div>
+        </div>`;
+      });
+      if (msgs.length > 0) {
+        html += `<div style="font-family:'Barlow Condensed';font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-top:16px;margin-bottom:8px;">Contact Messages (${msgs.length})</div>`;
+        msgs.forEach(m => {
+          html += `<div class="admin-entry">
+            <div class="admin-entry-top">
+              <span style="font-family:'Bebas Neue';font-size:18px;letter-spacing:1px;">${m.firstName} ${m.lastName}</span>
+              <span class="admin-plan-badge" style="background:rgba(255,255,255,0.06);">${m.interest}</span>
+            </div>
+            <div style="font-size:13px;color:var(--grey);">${m.email}</div>
+            ${m.message ? `<div style="font-size:13px;color:var(--light-grey);margin-top:6px;">${m.message}</div>` : ''}
+            <div style="font-size:11px;color:var(--grey);margin-top:4px;">${m.date}</div>
+          </div>`;
+        });
+      }
+      list.innerHTML = html;
+    }
+
+    // ── Mobile hamburger ─────────────────────────────
+    const hamburger  = document.querySelector('.hamburger');
+    const navLinks   = document.querySelector('.nav-links');
+    hamburger?.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('mobile-open');
+      hamburger.setAttribute('aria-expanded', open);
+    });
+    navLinks?.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('mobile-open'));
+    });
+
+    // ── Program popups ───────────────────────────────
+    const programData = {
+      strength: {
+        num: '01',
+        level: 'Beginner – Advanced',
+        title: 'Strength & Power',
+        img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=900&q=80',
+        summary: 'Our flagship program built around progressive overload and powerlifting fundamentals. Whether you\'re picking up a barbell for the first time or chasing a new PR, our coaches design a periodized plan that evolves with you — week by week, cycle by cycle.',
+        duration: '60 – 90 min / session',
+        frequency: '3 – 5× per week',
+        coach: 'Marcus Reid',
+        highlights: [
+          'Personalized 1RM assessments every 8 weeks',
+          'Compound-lift mastery: squat, deadlift, bench, overhead',
+          'Mobility & injury-prevention warm-up protocols',
+          'Nutrition periodization to support strength goals',
+          'Access to dedicated powerlifting platform & specialty bars'
+        ]
+      },
+      hiit: {
+        num: '02',
+        level: 'All Levels',
+        title: 'HIIT & Cardio',
+        img: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=900&q=80',
+        summary: 'High-intensity interval training, reimagined. Expect circuit-style workouts that alternate explosive bursts with active recovery — torching fat, spiking your VO₂ max, and leaving you absolutely spent in the best way possible.',
+        duration: '45 min / session',
+        frequency: '3 – 6× per week',
+        coach: 'Sofia Vega',
+        highlights: [
+          'Heart-rate zone training with real-time monitoring',
+          'Varied formats: Tabata, EMOM, AMRAPs & ladder circuits',
+          'Zero equipment to fully-loaded versions for every level',
+          'Weekly benchmark WODs to track your conditioning gains',
+          'Metabolic finishers that accelerate fat loss'
+        ]
+      },
+      yoga: {
+        num: '03',
+        level: 'All Levels',
+        title: 'Yoga & Recovery',
+        img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=900&q=80',
+        summary: 'Recovery is where gains are made. Our yoga & mobility program blends traditional hatha flows, deep tissue release, and sport-specific stretching to keep you moving freely, sleeping better, and performing at your peak.',
+        duration: '60 min / session',
+        frequency: '1 – 4× per week',
+        coach: 'Aiko Tanaka',
+        highlights: [
+          'Mobility assessments targeting your personal weak links',
+          'Sport-specific sequences for lifters, runners & fighters',
+          'Breathwork & mindfulness for stress recovery',
+          'Foam rolling & myofascial release techniques',
+          'Evening restorative classes for deep sleep quality'
+        ]
+      }
+    };
+
+    const progOverlay = document.getElementById('progOverlay');
+    const progClose   = document.getElementById('progClose');
+
+    function openProgram(key) {
+      const d = programData[key];
+      if (!d) return;
+      document.getElementById('progNum').textContent      = d.num;
+      document.getElementById('progLevel').textContent    = d.level;
+      document.getElementById('progTitle').textContent    = d.title;
+      document.getElementById('progImg').src              = d.img;
+      document.getElementById('progImg').alt              = d.title;
+      document.getElementById('progSummary').textContent  = d.summary;
+      document.getElementById('progDuration').textContent = d.duration;
+      document.getElementById('progFrequency').textContent= d.frequency;
+      document.getElementById('progCoach').textContent    = d.coach;
+      document.getElementById('progHighlights').innerHTML = d.highlights.map(h => `<li>${h}</li>`).join('');
+      progOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProgram() {
+      progOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.program-card[data-program]').forEach(card => {
+      card.addEventListener('click', () => openProgram(card.dataset.program));
+    });
+    document.querySelectorAll('.program-learn-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        openProgram(btn.closest('.program-card').dataset.program);
+      });
+    });
+    progClose?.addEventListener('click', closeProgram);
+    progOverlay?.addEventListener('click', e => { if (e.target === progOverlay) closeProgram(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProgram(); });
+
+    // ── Animated counters ─────────────────────────────
     function animateCount(el, target, suffix = '') {
       let current = 0;
       const step = target / 60;
